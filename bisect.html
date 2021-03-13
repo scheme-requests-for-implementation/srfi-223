@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>SRFI ###: Generalized binary search procedures</title>
+    <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
+    <link rel="stylesheet" href="https://srfi.schemers.org/srfi.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1"></head>
+  <body>
+    <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI surfboard logo" /></a>###: Generalized binary search procedures</h1>
+
+<p>by Daphne Preston-Kendal</p>
+    
+<h2 id="status">Status</h2>
+
+<p>??? the draft/final/withdrawn status of the SRFI, information on how
+to subscribe to its mailing list, and important dates in its history.
+The editor will add this section.</p>
+
+<h2 id="abstract">Abstract</h2>
+
+<p>Generalized procedures for binary search of vector-like data structures are provided which can be applied to any sequence type, including ones defined by the user, together with applications of these procedures for Scheme’s built-in vector and bytevector types.
+
+<h2 id="issues">Issues</h2>
+
+<ul>
+  <li>Whether syntax to define bisect-left and bisect-right for a particular sequence type, with potential automatic setting of lo and hi, would be a useful thing to provide.
+  <li>The sample implementation won’t load in Chibi Scheme for as-yet inscrutable reasons.
+</ul>
+
+<h2 id="rationale">Rationale</h2>
+
+<p>While SRFIs <a href="https://srfi.schemers.org/srfi-43/srfi-43.html">43</a> and <a href="http://srfi.schemers.org/srfi-133/srfi-133.html">133</a> provide a <code>vector-binary-search</code> procedure, in neither SRFI is the option provided to control whether the index of the leftmost or rightmost matching element of the vector is returned. They also use a C-style <code>cmp</code> procedure which is incompatible with the less-than comparison predicate used by <a href="https://srfi.schemers.org/srfi-132/srfi-132.html">SRFI 32</a> for sorting lists and vectors (such as might be used to make one ready for binary search. Finally, <code>vector-binary-search</code>, as the name implies, can only be used on Scheme vectors. Use on other sequence types, such as bytevectors, is not foreseen.
+
+<p>As binary search is notoriously tricky to implement correctly (especially in light of its apparent simplicity), a correct implementation which is generalizable to any sequence type (including one that a programmer might define themselves) is a useful building block for fast search applications.
+
+<p>Programmers should be aware that it rarely makes sense to use binary search on any sequence type which does not provide O(1) (or ‘effectively O(1)’) access to its members. Scheme lists are not suitable for binary searching, as <code>list-ref</code> is an O(n) operation.
+
+<h2 id="specification">Specification</h2>
+
+<p>In the following procedure specifications, the following variable names are used as procedure arguments having a particular meaning:
+
+<ul>
+  <li><dfn><var>a</var></dfn> is a sequence which should be searched.
+  <li><dfn><var>val</var></dfn> is the object which will be searched for within the seauence <var>a</var>.
+  <li><dfn><var>ref</var></dfn> is a procedure taking two arguments, <var>a</var> and <var>i</var>, which returns the object at index <var>i</var> in <var>a</var>.
+  <li><dfn><var>less?</var></dfn> is a procedure taking two arguments and returning <code>#t</code> if the first is strictly less than the second, or otherwise <code>#f</code>.
+  <li><dfn><var>lo</var></dfn> is the lowest (i.e. leftmost) index into <var>a</var> from which the search should be made. If optional and not provided, defaults to 0.
+  <li><dfn><var>hi</var></dfn> is the highest (i.e. rightmost) index into <var>a</var> to which the search should be made.  If optional and not provided, defaults to the length of the sequence (i.e. the maximum index in the sequence plus 1).
+</ul>
+
+<h3 id=generalized-procedures>Generalized procedures</h3>
+
+<dl>
+  <dt><code>(bisect-left</code> <var>a</var> <var>val</var> <var>ref</var> <var>less?</var> <var>lo</var> <var>hi</var><code>)</code></code> ⇒ <var>idx</var>
+    <dd>Searches the sequence <var>a</var> for the value <var>val</var>, returning an index <var>idx</var> into <var>a</var> such that all elements with indexes ≥ <var>idx</var> are all ≥ <var>val</var>. In other words, returns the leftmost index in <var>a</var> of <var>val</var>. Returns <var>lo</var> if <var>val</var> is not in <var>a</var>.
+  <dt><code>(bisect-right</code> <var>a</var> <var>val</var> <var>ref</var> <var>less?</var> <var>lo</var> <var>hi</var><code>)</code></code> ⇒ <var>idx</var>
+    <dd>Searches the sequence <var>a</var> for the value <var>val</var>, returning an index <var>idx</var> into <var>a</var> such that all elements with indexes &lt; <var>idx</var> are all &lt; <var>val</var>. In other words, returns the rightmost index in <var>a</var> of <var>val</var> plus 1. Returns <var>hi</var> if <var>val</var> is not in <var>a</var>.
+</dl>
+
+<h3 id=vector-procedures>Vector procedures</h3>
+
+<dl>
+  <dt><code>(vector-bisect-left</code> <var>a</var> <var>val</var> <var>less?</var>)</code></code> ⇒ <var>idx</var>
+  <dt><code>(vector-bisect-left</code> <var>a</var> <var>val</var> <var>less?</var> <var>lo</var>)</code></code> ⇒ <var>idx</var>
+  <dt><code>(vector-bisect-left</code> <var>a</var> <var>val</var> <var>less?</var> <var>lo</var> <var>hi</var><code>)</code></code> ⇒ <var>idx</var>
+    <dd>Searches the vector <var>a</var> using <code>bisect-left</code>.
+  <dt><code>(vector-bisect-right</code> <var>a</var> <var>val</var> <var>less?</var>)</code></code> ⇒ <var>idx</var>
+  <dt><code>(vector-bisect-right</code> <var>a</var> <var>val</var> <var>less?</var> <var>lo</var>)</code></code> ⇒ <var>idx</var>
+  <dt><code>(vector-bisect-right</code> <var>a</var> <var>val</var> <var>less?</var> <var>lo</var> <var>hi</var><code>)</code></code> ⇒ <var>idx</var>
+    <dd>Searches the vector <var>a</var> using <code>bisect-right</code>.
+</dl>
+
+<h3 id=bytevector-procedures>Bytevector procedures</h3>
+
+<dl>
+  <dt><code>(bytevector-bisect-left</code> <var>a</var> <var>val</var>)</code></code> ⇒ <var>idx</var>
+  <dt><code>(bytevector-bisect-left</code> <var>a</var> <var>val</var> <var>lo</var>)</code></code> ⇒ <var>idx</var>
+  <dt><code>(bytevector-bisect-left</code> <var>a</var> <var>val</var> <var>lo</var> <var>hi</var><code>)</code></code> ⇒ <var>idx</var>
+    <dd>Searches the bytevector <var>a</var> using <code>bisect-left</code> with the standard <code>&lt;</code> comparison procedure.
+  <dt><code>(bytevector-bisect-right</code> <var>a</var> <var>val</var>)</code></code> ⇒ <var>idx</var>
+  <dt><code>(bytevector-bisect-right</code> <var>a</var> <var>val</var> <var>lo</var>)</code></code> ⇒ <var>idx</var>
+  <dt><code>(bytevector-bisect-right</code> <var>a</var> <var>val</var> <var>lo</var> <var>hi</var><code>)</code></code> ⇒ <var>idx</var>
+    <dd>Searches the bytevector <var>a</var> using <code>bisect-right</code> with the standard <code>&lt;</code> comparison procedure.
+</dl>
+
+<h2 id=example>Example usage</h2>
+
+<table>
+  <tr>
+    <td><code>(vector-bisect-left #(1 2 2 3 5) 2 &lt;)</code>
+    <td>⇒ <code>1</code>
+  <tr>
+    <td><code>(vector-bisect-right #(1 2 2 3 5) 2 &lt;)</code>
+    <td>⇒ <code>3</code>
+  <tr>
+    <td><code>(vector-bisect-left #(1 2 2 3 5) 4 &lt;)</code>
+    <td>⇒ <code>4</code>
+  <tr>
+    <td><code>(vector-bisect-left #(1 2 2 3 5) 4 &lt; 0 1)</code>
+    <td>⇒ <code>1</code>
+</table>
+
+<p>Or the same results changing the example vector to a bytevector and using the <code>bytevector-bisect-left/right</code> procedures.
+
+<h2 id="implementation">Implementation</h2>
+
+<p>The sample implementation in the <a href="###">Git repository for this SRFI</a> should be correct and work on all compliant R7RS small implementations, although programmers working on Schemes with 32-bit word size, no automatic promotion of the results of <code>+</code> to bignums, and very large sequences (typically more than a gibi-entry or so in size, depending on fixnum range) should be aware of the possibility of integer overflow. See Joshua Bloch, <a href="https://ai.googleblog.com/2006/06/extra-extra-read-all-about-it-nearly.html">‘Extra, Extra — Read All About It: Nearly All Binary Searches and Mergesorts are Broken’</a>. Supporting Scheme systems without automatic bignum promotion is not a goal of the sample implementation.
+
+<h2 id="acknowledgements">Acknowledgements</h2>
+
+<p>The sample implementation is essentially a translation of the Python standard library implementation of binary search in <a href="https://github.com/python/cpython/blob/3.9/Lib/bisect.py"><code>bisect.py</code></a> into Scheme.
+
+<h2 id="copyright">Copyright</h2>
+<p>&copy; 2021 Daphne Preston-Kendal (text and sample implementation in Scheme). <br>
+&copy; 1998–2020 Python Software Foundation (guideline algorithm implementation in Python).</p>
+
+<p>
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation files
+  (the "Software"), to deal in the Software without restriction,
+  including without limitation the rights to use, copy, modify, merge,
+  publish, distribute, sublicense, and/or sell copies of the Software,
+  and to permit persons to whom the Software is furnished to do so,
+  subject to the following conditions:</p>
+
+<p>
+  The above copyright notice and this permission notice (including the
+  next paragraph) shall be included in all copies or substantial
+  portions of the Software.</p>
+<p>
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.</p>
+
+<p><a href="https://github.com/python/cpython/blob/3.9/LICENSE">Link to the applicable version of the licence for the original Python implementation, inasmuch as it is applicable.</a></p>
+
+  <hr>
+  <address>Editor: <a href="mailto:srfi-editors+at+srfi+dot+schemers+dot+org">Arthur A. Gleckler</a></address></body></html>
