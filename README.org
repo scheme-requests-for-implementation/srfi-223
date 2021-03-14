@@ -4,7 +4,7 @@
 
 
 
-keywords: [[https://srfi.schemers.org/?keywords=data-structure][Data Structure]]
+keywords: [[https://srfi.schemers.org/?keywords=miscellaneous][Miscellaneous]]
 
 This repository hosts [[https://srfi.schemers.org/srfi-223/][SRFI 223]]: Generalized binary search procedures, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
