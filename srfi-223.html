@@ -30,7 +30,7 @@ The editor will add this section.</p>
 
 <h2 id="rationale">Rationale</h2>
 
-<p>While SRFIs <a href="https://srfi.schemers.org/srfi-43/srfi-43.html">43</a> and <a href="https://srfi.schemers.org/srfi-133/srfi-133.html">133</a> provide a <code>vector-binary-search</code> procedure, in neither SRFI is the option provided to control whether the index of the leftmost or rightmost matching element of the vector is returned. They also use a C-style <code>cmp</code> procedure which is incompatible with the less-than comparison predicate used by <a href="https://srfi.schemers.org/srfi-132/srfi-132.html">SRFI 32</a> for sorting lists and vectors (such as might be used to make one ready for binary search. Finally, <code>vector-binary-search</code>, as the name implies, can only be used on Scheme vectors. Use on other sequence types, such as bytevectors, is not foreseen.
+<p>While SRFIs <a href="https://srfi.schemers.org/srfi-43/srfi-43.html">43</a> and <a href="https://srfi.schemers.org/srfi-133/srfi-133.html">133</a> provide a <code>vector-binary-search</code> procedure, in neither SRFI is the option provided to control whether the index of the leftmost or rightmost matching element of the vector is returned. They also use a C-style <code>cmp</code> procedure which is incompatible with the less-than comparison predicate used by <a href="https://srfi.schemers.org/srfi-132/srfi-132.html">SRFI 132</a> for sorting lists and vectors (such as might be used to make one ready for binary search). Finally, <code>vector-binary-search</code>, as the name implies, can only be used on Scheme vectors. Use on other sequence types, such as bytevectors, is not foreseen.
 
 <p>As binary search is notoriously tricky to implement correctly (especially in light of its apparent simplicity), a correct implementation which is generalizable to any sequence type (including one that a programmer might define themselves) is a useful building block for fast search applications.
 
@@ -101,7 +101,7 @@ The editor will add this section.</p>
     <td>⇒ <code>1</code>
 </table>
 
-<p>Or the same results changing the example vector to a bytevector and using the <code>bytevector-bisect-left/right</code> procedures.
+<p>Or the same results changing the example vector to a bytevector and using the <code>bytevector-bisect-left/right</code> procedures with no <code>&lt;</code> argument.
 
 <h2 id="implementation">Implementation</h2>
 
