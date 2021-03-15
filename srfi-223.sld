@@ -1,4 +1,4 @@
-(define-library (bisect)
+(define-library (srfi-223)
   (import (scheme base)
           (scheme case-lambda))
 
@@ -6,4 +6,4 @@
           vector-bisect-left vector-bisect-right
           bytevector-bisect-left bytevector-bisect-right)
 
-  (load "bisect.scm"))
+  (include "srfi-223.scm"))
