@@ -12,38 +12,28 @@
             (bisect-left a val ref less? lo mid)
             (bisect-left a val ref less? (+ mid 1) hi)))))
 
-(define vector-bisect-left
-  (case-lambda
-   ((a val less?)
-    (vector-bisect-left a val less? 0 (vector-length a)))
-   ((a val less? lo)
-    (vector-bisect-left a val less? lo (vector-length a)))
-   ((a val less? lo hi)
-    (bisect-left a val vector-ref less? lo hi))))
+(define-syntax define-bisection
+  (syntax-rules ()
+    ((_ bisect-left-name bisect-right-name ref-proc lo-hi-proc)
+     (begin
+       (define bisect-left-name
+         (case-lambda
+          ((a val less?)
+           (let-values (((lo hi) (lo-hi-proc a)))
+             (bisect-left a val ref-proc less? lo hi)))
+          ((a val less? lo hi)
+           (bisect-left a val ref-proc less? lo hi))))
+       (define bisect-right-name
+         (case-lambda
+          ((a val less?)
+           (let-values (((lo hi) (lo-hi-proc a)))
+             (bisect-right a val ref-proc less? lo hi)))
+          ((a val less? lo hi)
+           (bisect-right a val ref-proc less? lo hi))))))
+    ((_ bisect-left-name bisect-right-name ref-proc)
+     (define-bisection bisect-left-name bisect-right-name
+       ref-proc
+       (lambda (a) (error "both lo and hi arguments must be given to this procedure"))))))
 
-(define vector-bisect-right
-  (case-lambda
-   ((a val less?)
-    (vector-bisect-right a val less? 0 (vector-length a)))
-   ((a val less? lo)
-    (vector-bisect-right a val less? lo (vector-length a)))
-   ((a val less? lo hi)
-    (bisect-right a val vector-ref less? lo hi))))
-
-(define bytevector-bisect-left
-  (case-lambda
-   ((a val)
-    (bytevector-bisect-left a val 0 (bytevector-length a)))
-   ((a val lo)
-    (bytevector-bisect-left a val lo (bytevector-length a)))
-   ((a val lo hi)
-    (bisect-left a val bytevector-u8-ref < lo hi))))
-
-(define bytevector-bisect-right
-  (case-lambda
-   ((a val)
-    (bytevector-bisect-right a val 0 (bytevector-length a)))
-   ((a val lo)
-    (bytevector-bisect-right a val lo (bytevector-length a)))
-   ((a val lo hi)
-    (bisect-right a val bytevector-u8-ref < lo hi))))
+(define-bisection vector-bisect-left vector-bisect-right
+  vector-ref (lambda (v) (values 0 (vector-length v))))
