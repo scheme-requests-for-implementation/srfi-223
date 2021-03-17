@@ -26,9 +26,7 @@
 
 <h2 id="issues">Issues</h2>
 
-<ul>
-  <li>Whether there is a better alternative than providing <code>define-bisection</code> as syntax.
-</ul>
+<p>No issues at present.
 
 <h2 id="rationale">Rationale</h2>
 
@@ -62,14 +60,32 @@
     <dd>Searches the sequence <var>a</var> for the value <var>val</var>, returning an index <var>idx</var> into <var>a</var> such that all elements with indexes &lt; <var>idx</var> are all &lt; <var>val</var>. In other words, returns an index in <var>a</var> which is to the right of (i.e. after) <var>val</var> or anything less than it. Returns <var>hi</var> if <var>val</var> is greater than everything in <var>a</var>.
 </dl>
 
-<h3 id=syntax>Convenience syntax</h3>
+<h3 id=convenience>Convenience procedure</h3>
 
-<p>Defining both <code>*-bisect-left</code> and <code>*-bisect-right</code> procedures for a given type, and handling the optionality of <var>lo</var> and <var>hi</var> correctly, can make code very repetitive. To ease this repetition, the following convenience syntax is provided.
+<p>Defining both <code>*-bisect-left</code> and <code>*-bisect-right</code> procedures for a given type, and handling the optionality of <var>lo</var> and <var>hi</var> correctly, can make code very repetitive. To ease this repetition, the following convenience procedure is provided.
 
 <dl>
-  <dt><code>(define-bisection</code> <var>bisect-left-name</var> <var>bisect-right-name</var> <var>ref</var><code>)</code>
-  <dt><code>(define-bisection</code> <var>bisect-left-name</var> <var>bisect-right-name</var> <var>ref</var> <var>lo-hi-proc</var><code>)</code>
-    <dd>Defines <var>bisect-left-name</var> and <var>bisect-right-name</var> to be procedures of the form <code>(</code><var>bisect-*-name</var> <var>a</var> <var>val</var> <var>less?</var> <var>lo</var> <var>hi</var>)</code>, which call the <code>bisect-left</code> and <code>bisect-right</code> procedures with the given <var>ref</var> procedure, comparable to <code>vector-bisect-left</code> and <code>vector-bisect-right</code> on vectors. If the <var>lo-hi-proc</var> argument is given, it should be a procedure which takes one argument, a sequence <val>a</val>, and returns two values, the default <var>lo</var> and <var>hi</var> values for that sequence (usually 0 and the length of the sequence). If no <var>lo-hi-proc</var> procedure is given, the <var>lo</var> and <var>hi</var> arguments to the defined procedures are mandatory.
+  <dt><code>(bisection</code> <var>ref</var><code>)</code>
+    ⇒
+    <span style="display: inline-block; vertical-align: middle;">
+      1 <code>(<var>left-proc</var></code> <var>a</var> <var>val</var> <var>less?</var> <var>lo</var> <var>hi</var><code>)</code> <br>
+      2 <code>(<var>right-proc</var></code> <var>a</var> <var>val</var> <var>less?</var> <var>lo</var> <var>hi</var><code>)</code>
+    </span>
+  <dt><code>(bisection</code> <var>ref</var> <var>lo-hi-proc</var><code>)</code>
+    ⇒
+    <span style="display: inline-block; vertical-align: middle;">
+      1
+      <span style="display: inline-block; vertical-align: middle;">
+        <code>(<var>left-proc</var></code> <var>a</var> <var>val</var> <var>less?</var><code>)</code> <br>
+        <code>(<var>left-proc</var></code> <var>a</var> <var>val</var> <var>less?</var> <var>lo</var> <var>hi</var><code>)</code>
+      </span> <br>
+      2
+      <span style="display: inline-block; vertical-align: middle; margin-top: 0.5em;">
+        <code>(<var>right-proc</var></code> <var>a</var> <var>val</var> <var>less?</var><code>)</code> <br>
+        <code>(<var>right-proc</var></code> <var>a</var> <var>val</var> <var>less?</var> <var>lo</var> <var>hi</var><code>)</code>
+      </span>
+    </span>
+    <dd>Returns two values, procedures which call <code>bisect-left</code> and <code>bisect-right</code> respectively with the given <var>ref</var> procedure, comparable to <code>vector-bisect-left</code> and <code>vector-bisect-right</code> for vectors. If the <var>lo-hi-proc</var> argument is given, it should be a procedure which takes one argument, a sequence <var>a</var>, and returns two values, the default <var>lo</var> and <var>hi</var> values for that sequence (usually 0 and the length of the sequence). If no <var>lo-hi-proc</var> procedure is given, the <var>lo</var> and <var>hi</var> arguments to the returned procedures are mandatory.
 </dl>
 
 <h3 id=vector-procedures>Vector procedures</h3>
@@ -89,9 +105,9 @@
 
 <p>Bisect procedures which operate on Scheme bytevectors can be defined concisely with the following code.
 
-<pre><code>(define-bisection bytevector-bisect-left bytevector-bisect-right
-  bytevector-u8-ref
-  (lambda (bv) (values 0 (bytevector-length bv))))</code></pre>
+<pre><code>(define-values (bytevector-bisect-left bytevector-bisect-right)
+  (bisection bytevector-u8-ref
+             (lambda (bv) (values 0 (bytevector-length bv)))))</code></pre>
 
 <h3>Bisecting a vector</h3>
 

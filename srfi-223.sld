@@ -3,7 +3,7 @@
           (scheme case-lambda))
 
   (export bisect-left bisect-right
-          define-bisection
+          bisection
           vector-bisect-left vector-bisect-right)
 
   (include "srfi-223.scm"))
