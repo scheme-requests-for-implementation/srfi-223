@@ -128,9 +128,20 @@
 
 <p>Or with the example bytevector bisection defined above, one could change the procedures here to their corresponding bytevector versions, and the vectors also to bytevectors, and get the same results.
 
+<h3>Use with <a href="https://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> comparators</h3>
+
+<p>The following code shows how to define a procedure <code>vector-bisect-index</code> which returns the smallest index of <var>val</var> in the vector <var>a</var>, or <code>#f</code> if <var>val</var> is not actually in <var>a</var>, according to the given SRFI 128 comparator <var>cmpr</var>.
+
+<pre><code>(define (vector-bisect-index a val cmpr)
+  (let ((idx (vector-bisect-left a val (comparator-ordering-predicate cmpr))))
+    (if (and (< idx (vector-length a))
+             (=? cmpr val (vector-ref a idx)))
+        idx
+     #f)))</code></pre>
+
 <h2 id="implementation">Implementation</h2>
 
-<p>The sample implementation in the <a href="https://github.com/scheme-requests-for-implementation/srfi-223">Git repository for this SRFI</a> should be correct and work on all compliant R7RS small implementations, although programmers working on Schemes with 32-bit word size, no automatic promotion of the results of <code>+</code> to bignums, and very large sequences (typically more than a gibi-entry or so in size, depending on fixnum range) should be aware of the possibility of integer overflow. See Joshua Bloch, <a href="https://ai.googleblog.com/2006/06/extra-extra-read-all-about-it-nearly.html">‘Extra, Extra — Read All About It: Nearly All Binary Searches and Mergesorts are Broken’</a>. Supporting Scheme systems without automatic bignum promotion is not a goal of the sample implementation.
+<p>The sample implementation in the <a href="https://github.com/scheme-requests-for-implementation/srfi-223">Git repository for this SRFI</a> should be correct and work on all compliant R7RS small implementations, although programmers working on Schemes with no automatic promotion of the results of <code>+</code> to bignums and very large sequences (typically more than a gibi-entry or so in size, depending on fixnum range) should be aware of the possibility of integer overflow. See Joshua Bloch, <a href="https://ai.googleblog.com/2006/06/extra-extra-read-all-about-it-nearly.html">‘Extra, Extra — Read All About It: Nearly All Binary Searches and Mergesorts are Broken’</a>. Supporting Scheme systems without automatic bignum promotion is not a goal of the sample implementation.
 
 <h2 id="acknowledgements">Acknowledgements</h2>
 
