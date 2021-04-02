@@ -89,7 +89,7 @@
   (test "left bisection returning negative result"
         -2 (mvector-bisect-left mvtest-odd 2 <))
   (test "right bisection returning negative result"
-        -2 (mvector-bisect-right mvtest-odd 2 <))
+        -1 (mvector-bisect-right mvtest-odd 2 <))
 
   (test "left bisection returning positive result"
         1 (mvector-bisect-left mvtest-odd 8 <))
