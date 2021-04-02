@@ -44,7 +44,7 @@
 <ul>
   <li><dfn><var>a</var></dfn> is a sorted sequence which should be searched.
   <li><dfn><var>val</var></dfn> is the value which will be searched for within the sequence <var>a</var>.
-  <li><dfn><var>ref</var></dfn> is a procedure taking two arguments, <var>a</var> and <var>i</var>, which returns the object at index <var>i</var> in <var>a</var>. It is the programmer’s responsibility to ensure that <var>ref</var> can correctly obtained indexed values for a given sequence <var>a</var>. (Thus, it is an error to pass <code>bytevector-u8-ref</code> as <var>ref</var> when <var>a</var> is a vector.)
+  <li><dfn><var>ref</var></dfn> is a procedure taking two arguments, <var>a</var> and <var>i</var>, which returns the object at index <var>i</var> in <var>a</var>. It is the programmer’s responsibility to ensure that <var>ref</var> can correctly obtain indexed values for a given sequence <var>a</var>. (Thus, it is an error to pass <code>bytevector-u8-ref</code> as <var>ref</var> when <var>a</var> is a vector.)
   <li><dfn><var>less?</var></dfn> is a procedure taking two arguments and returning <code>#t</code> if the first is strictly less than the second according to the sort order of the sequence <var>a</var>, or otherwise <code>#f</code>. It is the programmer’s responsibility to ensure that <var>less?</var> can handle comparisons between the given <var>val</var> and any value present in the sequence <var>a</var>; that the order of items in given sequence <var>a</var> actually corresponds to the behaviour of the given <var>less?</var>; and that it is irreflexive, antisymmetric, and transitive, yielding a total ordering of all values in its domain.
   <li><dfn><var>lo</var></dfn> is the lowest (i.e. leftmost) index into <var>a</var> from which the search should be made. If optional and not provided, defaults to 0.
   <li><dfn><var>hi</var></dfn> is the one more than the highest (i.e. rightmost) index into <var>a</var> to which the search should be made. If optional and not provided, defaults to the length of the sequence.
@@ -102,9 +102,9 @@
 
 <h3 id=library-names>Library names</h3>
 
-<p>All procedures provided by this SRFI are in the library called <code>(srfi 223)</code>, <i lang=la>mutatis mutandis</i>.
+<p>All procedures provided by this SRFI are in the library called <code>(srfi 223)</code>, <i lang="la">mutatis mutandis</i>.
 
-<p>Implementations and future RnRS specifications should, if they adopt this SRFI, specify analagous <code>*-bisect-left</code> and <code>*-bisect-right</code> procedures for all sequence types they provide which offer O(1) or ‘effectively O(1)’ access time, and in which sorted data may reasonably be expected to appear; but they should do under another library name, and the library <code>(srfi 223)</code> must contain only the procedures directly specified here. They may also choose to divide the core, generalized procedures of this library (<code>bisect-left</code>, <code>bisect-right</code>, and <code>bisection</code>) into one library (such as <code>(xyz bisect)</code>) and make each application of those procedures to specific sequence types their own sublibrary (such as <code>(xyz bisect vector)</code>, <code>(xyz bisect flexvector)</code>, etc.)
+<p>Implementations and future RnRS specifications should, if they adopt this SRFI, specify analogous <code>*-bisect-left</code> and <code>*-bisect-right</code> procedures for all sequence types they provide which offer O(1) or ‘effectively O(1)’ access time, and in which sorted data may reasonably be expected to appear; but they should do under another library name, and the library <code>(srfi 223)</code> must contain only the procedures directly specified here. They may also choose to divide the core, generalized procedures of this library (<code>bisect-left</code>, <code>bisect-right</code>, and <code>bisection</code>) into one library (such as <code>(xyz bisect)</code>) and make each application of those procedures to specific sequence types their own sublibrary (such as <code>(xyz bisect vector)</code>, <code>(xyz bisect flexvector)</code>, etc.)
 
 <h2 id=example>Example usage</h2>
 
@@ -144,7 +144,7 @@
     (if (and (&lt; idx (vector-length a))
              (=? cmpr val (vector-ref a idx)))
         idx
-     #f)))</code></pre>
+        #f)))</code></pre>
 
 <h2 id="implementation">Implementation</h2>
 
