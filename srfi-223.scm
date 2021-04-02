@@ -9,8 +9,8 @@
   (if (>= lo hi) lo
       (let ((mid (floor-quotient (+ lo hi) 2)))
         (if (less? val (ref a mid))
-            (bisect-left a val ref less? lo mid)
-            (bisect-left a val ref less? (+ mid 1) hi)))))
+            (bisect-right a val ref less? lo mid)
+            (bisect-right a val ref less? (+ mid 1) hi)))))
 
 (define bisection
   (case-lambda
