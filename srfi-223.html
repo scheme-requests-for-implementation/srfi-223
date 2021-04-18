@@ -22,7 +22,7 @@
 
 <h2 id="abstract">Abstract</h2>
 
-<p>Generalized procedures for binary search of vector-like data structures are provided which can be applied to any sequence type, including ones defined by the user, together with applications of these procedures for Scheme’s built-in vector and bytevector types.
+<p>Generalized procedures for binary search of vector-like data structures are provided which can be applied to any sequence type, including ones defined by the user, together with applications of these procedures for Scheme’s built-in vectors.
 
 <h2 id="issues">Issues</h2>
 
@@ -30,7 +30,7 @@
 
 <h2 id="rationale">Rationale</h2>
 
-<p>While SRFIs <a href="https://srfi.schemers.org/srfi-43/srfi-43.html">43</a> and <a href="https://srfi.schemers.org/srfi-133/srfi-133.html">133</a> provide a <code>vector-binary-search</code> procedure, in neither SRFI is the option provided to control whether the index of the leftmost or rightmost matching element of the vector is returned. They also use a C-style <code>cmp</code> procedure which is incompatible neither with the less-than comparison predicate used by <a href="https://srfi.schemers.org/srfi-132/srfi-132.html">SRFI 132</a> for sorting lists and vectors (such as might be used to make one ready for binary search), nor with <a href="https://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> comparator ordering predicates. Finally, <code>vector-binary-search</code>, as the name implies, can only be used on Scheme vectors. Use on other sequence types, such as the homogenous numeric vectors of <a href="https://srfi.schemers.org/srfi-160/srfi-160.html">SRFI 160</a>, is not foreseen.
+<p>While SRFIs <a href="https://srfi.schemers.org/srfi-43/srfi-43.html">43</a> and <a href="https://srfi.schemers.org/srfi-133/srfi-133.html">133</a> provide a <code>vector-binary-search</code> procedure, in neither SRFI is the option provided to control whether the index of the leftmost or rightmost matching element of the vector is returned. They also use a C-style <code>cmp</code> procedure which is compatible neither with the less-than comparison predicate used by <a href="https://srfi.schemers.org/srfi-132/srfi-132.html">SRFI 132</a> for sorting lists and vectors (such as might be used to make one ready for binary search), nor with <a href="https://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> comparator ordering predicates. Finally, <code>vector-binary-search</code>, as the name implies, can only be used on Scheme vectors. Use on other sequence types, such as the homogenous numeric vectors of <a href="https://srfi.schemers.org/srfi-160/srfi-160.html">SRFI 160</a>, is not foreseen.
 
 <p>As binary search is notoriously tricky to implement correctly (especially in light of its apparent simplicity), a correct implementation which is generalizable to any sequence type (including one that a programmer might define themselves) is a useful building block for fast search applications.
 
