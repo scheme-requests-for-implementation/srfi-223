@@ -8,7 +8,7 @@ keywords: [[https://srfi.schemers.org/?keywords=miscellaneous][Miscellaneous]]
 
 This repository hosts [[https://srfi.schemers.org/srfi-223/][SRFI 223]]: Generalized binary search procedures, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
-This SRFI is in /draft/ status.
+This SRFI is in /final/ status.
 
 See also [[https://srfi.schemers.org/srfi-43/][SRFI 43: Vector library]] and [[https://srfi.schemers.org/srfi-133/][SRFI 133: Vector Library (R7RS-compatible)]].
 
