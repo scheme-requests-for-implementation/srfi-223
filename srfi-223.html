@@ -143,10 +143,9 @@
 
 <pre><code>(define (vector-bisect-index a val cmpr)
   (let ((idx (vector-bisect-left a val (comparator-ordering-predicate cmpr))))
-    (if (and (&lt; idx (vector-length a))
-             (=? cmpr val (vector-ref a idx)))
-        idx
-        #f)))</code></pre>
+    (and (&lt; idx (vector-length a))
+         (=? cmpr val (vector-ref a idx))
+         idx)))</code></pre>
 
 <h2 id="implementation">Implementation</h2>
 
