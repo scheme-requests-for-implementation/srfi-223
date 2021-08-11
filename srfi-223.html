@@ -149,7 +149,16 @@
 
 <h2 id="acknowledgements">Acknowledgements</h2>
 
+<p>Thanks to:
+  John Cowan, for suggesting a more rigorous specification of the <var>less?</var> parameter, using language from SRFI 128, which in turn inspired an altogether clearer description of what the programmer’s responsibilities are in terms of providing correct values to the procedures in this library;
+  Marc Nieper-Wißkirchen, for suggesting using SRFI 128 comparators instead of bare comparison predicates, and Daniel Itaborai, for requesting higher-level procedures, which suggestions were not adopted but together inspired the above example of implementing <code>vector-bisect-index</code>;
+  Arthur Gleckler, for editing this SRFI and many others, and suggesting a cleaner implementation of <code>vector-bisect-index</code>;
+  and especially to
+  Sundarshan S. Chawathe, who by attempting to create an independent implementation of this library uncovered ambiguities and problems in the specifications of <code>bisect-left</code> and <code>bisect-right</code> in earlier drafts of this SRFI.
+
 <p>The sample implementation is essentially a translation of the Python standard library implementation of binary search in <a href="https://github.com/python/cpython/blob/3.9/Lib/bisect.py"><code>bisect.py</code></a> into Scheme.
+
+<p>Any remaining errors in specification or sample implementation are the author’s and the author’s alone.
 
 <h2 id="copyright">Copyright</h2>
 <p>&copy; 2021 Daphne Preston-Kendal (text and sample implementation in Scheme). <br>
