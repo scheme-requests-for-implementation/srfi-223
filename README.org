@@ -1,3 +1,6 @@
+
+# SPDX-FileCopyrightText: 2024 Arthur A. Gleckler
+# SPDX-License-Identifier: MIT
 * SRFI 223: Generalized binary search procedures
 
 ** by Daphne Preston-Kendal
@@ -6,17 +9,16 @@
 
 keywords: [[https://srfi.schemers.org/?keywords=miscellaneous][Miscellaneous]]
 
+library-name: bisect
+
 This repository hosts [[https://srfi.schemers.org/srfi-223/][SRFI 223]]: Generalized binary search procedures, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
 This SRFI is in /final/ status.
-
-See also [[https://srfi.schemers.org/srfi-43/][SRFI 43: Vector library]] and [[https://srfi.schemers.org/srfi-133/][SRFI 133: Vector Library (R7RS-compatible)]].
-
+See also [[/srfi-43/][SRFI 43: Vector library]] and [[/srfi-133/][SRFI 133: Vector Library (R7RS-compatible)]].
 The full documentation for this SRFI can be found in the [[https://srfi.schemers.org/srfi-223/srfi-223.html][SRFI Document]].
 
 If you'd like to participate in the discussion of this SRFI, or report issues with it, please [[https://srfi.schemers.org/srfi-223/][join the SRFI-223 mailing list]] and send your message there.
 
 Thank you.
-
 
 [[mailto:srfi-editors@srfi.schemers.org][The SRFI Editors]]
